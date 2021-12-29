@@ -188,3 +188,117 @@ So in a nutshell the container runtimes does some or all of the below tasks:
 >Docker is no longer a monolith and under the hood its using the containerd and runc runtimes to manage containers.
 containerd enables us to have container ecosystem without docker, for example cri-o in Kubernetes world can have the container runtime without docker.  
 
+#### Finally Explain the Docker Engine?
+
+When Docker was first released, it has one monolithic binary which includes Docker client, Docker API, container runtime, an image builds, etc. But, it was later modularized into separate components according to OCI(open container Initiative). OCI created two container-related specifications
+       ✔ Image Spec
+       ✔ Container runtime spec
+
+All the image-specific and container-specific binaries were moved out of the docker daemon and implemented as separate modules.
+
+*Docker client takes the commands and sends these commands to daemon through API. Docker daemon is responsible for implementing those commands with the help of containerd and runc libs.*
+  
+![image](https://user-images.githubusercontent.com/33947539/147628028-9119d755-053d-48cd-af17-3ca364fa114e.png)
+
+**Docker Client**: 
+This is mostly CLI where you send docker commands to docker daemon. If you install Docker on any OS like Windows(cmd), mac(terminal), or Linux, This is where you actually interact with docker.
+
+**Docker daemon**: 
+This is the server that exposes Restful API to accept the docker commands from the Docker client. This is responsible for executing those commands, an image builds, authentication, security, networking, etc.
+
+**Containerd**: This sits between daemon and runc at the OCI layer and this is responsible for the container lifecycle operations. It started as a lightweight container management But, it has more functionality other than container execution.
+
+**runc**: It creates containers. containerd uses a new instance of runc every time we create a container. runc process exits as soon as it creates a container so that we don’t have to create as many runc instances as containers.
+
+**Shim**: Shim is nothing but a library that enables daemonless containers. The reason why it is daemonless is runc process exits as soon as it creates a container. Shim is responsible for the container from there. It reports the container’s exit status back to the daemon.
+  
+#### What are containers?
+👉 A running instance of an image is called a container. We can start the container with any image we built or pulled from the docker hub with the following command 
+
+![image](https://user-images.githubusercontent.com/33947539/147628932-392d9a84-7758-4a96-b9b0-6802162e002a.png)
+
+>docker container run
+  
+For instance, Let’s start a container from the node image. If the image is cached locally it will it from the local, if not it will pull it from the official docker repo.
+
+>docker container run -it --name my-node node:latest /bin/bash
+ 
+we don’t have a local node image so, it is pulled from the docker hub and process we are running /bin/bash as soon as the container starts. We can interact with the bash shell immediately to check the versions of the node like below. we can exit out with the exit command.
+
+![image](https://user-images.githubusercontent.com/33947539/147628469-1568f0bd-38bf-440f-b65f-873df115879e.png)
+
+We can start the container in a detached mode as well with -d flag. When we start the container like this, it just returns the id.
+
+![image](https://user-images.githubusercontent.com/33947539/147628578-de948b1b-b640-4470-b485-a333df97c9b3.png)
+  
+#### Explain the Docker run command?
+
+![image](https://user-images.githubusercontent.com/33947539/147628712-cb3a1e92-b165-4a67-a6cf-82ada7dced80.png)
+
+![image](https://user-images.githubusercontent.com/33947539/147629133-4ba10ebd-8225-454d-b9fc-681f97c1fd84.png)
+
+#### How do you interact with the running containers?
+
+👉 We can interact with the running containers in two ways **exec and attach**
+  
+we can directly interact with the container when we start a container by providing the process we want to run at the end.
+for instance, if we are running node, we can provide bash at the end to interact with it
+>docker container run -it --name my-node node:latest /bin/bash
+
+#### Explain the difference between attach and exec commands?
+**attach**: 
+This is used to interact with the container with the same process that container is running. Let’s run the following commands.
+
+```yaml
+// run the container in detached mode
+docker container run -dit --name mynode1 node bash
+// make sure container is up
+docker container ls
+// attach the running container
+docker attach mynode
+// exit out of the running process
+exit
+// check whether conatiner is running or not
+docker ps
+```
+  
+*if we exit with the attach command, it exits the present running process of the container. so, the container stops.*
+
+![image](https://user-images.githubusercontent.com/33947539/147629403-10fe7f9b-7144-4155-8874-bca39564a1b1.png)
+
+**exec**: 
+This command is used to interact with the container with a separate process. So that if we exit out of the process, the container is still running in another process.
+
+```yaml  
+// run the container in detached mode
+docker container run -dit --name mynode1 node bash
+// make sure container is up
+docker container ls
+// using exec, takes two arguments
+docker exec -it mynode bash
+// exit out of the running process
+exit
+// check whether conatiner is running or not
+docker ps
+```
+![image](https://user-images.githubusercontent.com/33947539/147629576-3535b70c-ddf0-4527-aa58-d7079aa54409.png)
+
+#### What is the difference between the commands container stop and container rm?
+
+The difference is that docker container stop sends SIGTERM to container process and docker container rm sends SIGKILL to container process. SIGKILL wait for 10 sec before it ends container’s life.  
+
+#### What are some of the best practices using Docker containers?
+
+```yaml  
+Always stop containers before removing. Graceful shutdown is always the best practice
+Use volumes for persistent data. Make sure removing volumes if not necessary
+use one application per container. For instance, don’t use nodejs app and MongoDB in one container.
+Use docker cache to our advantage while building images using dockerfiles
+always build the smallest image possible so that container starts quickly and will be fewer disk usages.
+make use of docker multi-stage dockerfile to build small and secure images.
+when it comes to usage of public image, should be chosen carefully as we don’t have complete control over it.
+tags are mutable so we should use these tags properly. Use digest since it is immutable.
+Always build the image only with the necessary tools. Always reduce the usage of tools, it will have less surface for attacks.
+whenever we are sharing data between containers with volumes, make sure only one container is writing into the volume to avoid concurrency.  
+```
+  
