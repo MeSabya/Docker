@@ -328,4 +328,54 @@ docker container logs --tail 10--follow mynode
 ```Dockerfile   
 VOLUME /dockerexample
 ```
+
+#### What is the difference between CMD and ENTRYPOINT in a Dockerfile?
+
+👉 *The ENTRYPOINT specifies a command that will always be executed when the container starts. The CMD specifies arguments that will be fed to the ENTRYPOINT.*
+   
+For example, if your Dockerfile is:
+   
+```Dockerfile
+FROM debian:wheezy
+ENTRYPOINT ["/bin/ping"]
+CMD ["localhost"]
+```
+
+Running the image without any argument will ping the localhost:
+   
+```Doc
+$ docker run -it test
+PING localhost (127.0.0.1): 48 data bytes
+56 bytes from 127.0.0.1: icmp_seq=0 ttl=64 time=0.096 ms
+56 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.088 ms
+56 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.088 ms
+^C--- localhost ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max/stddev = 0.088/0.091/0.096/0.000 ms
+Now, running the image with an argument will ping the argument:
+
+$ docker run -it test google.com
+PING google.com (173.194.45.70): 48 data bytes
+56 bytes from 173.194.45.70: icmp_seq=0 ttl=55 time=32.583 ms
+56 bytes from 173.194.45.70: icmp_seq=2 ttl=55 time=30.327 ms
+56 bytes from 173.194.45.70: icmp_seq=4 ttl=55 time=46.379 ms
+^C--- google.com ping statistics ---
+5 packets transmitted, 3 packets received, 40% packet loss
+round-trip min/avg/max/stddev = 30.327/36.430/46.379/7.095 ms
+```
+   
+Anything that appears after the image name in the docker run command is passed to the container and treated as CMD arguments.
+
+#### Docker Logging: Where Are Container Logs Stored
+
+You see, by default, Docker containers emit logs to the stdout and stderr output streams. Containers are stateless, and the logs are stored on the Docker host in JSON files by default.
+
+👉 You find these JSON log files in the **/var/lib/docker/containers/** directory on a Linux Docker host. The <container_id> here is the id of the running container.
+/var/lib/docker/containers/<container_id>/<container_id>-json.log
+
+![image](https://user-images.githubusercontent.com/33947539/147730223-479a5c82-a41f-4fe2-8683-2fe99ef45eb4.png)
+
+
+
+
   
