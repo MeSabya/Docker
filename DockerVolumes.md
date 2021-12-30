@@ -113,3 +113,82 @@ So, with the help of volumes, we can easily access the data even we stop the con
 •	readonly —mounts the volume as read-only. Optional. Takes no value.
 
 >In the old days (i.e. pre-2017) 😏the --volume flag was popular. Originally, the -v or --volume flag was used for standalone containers and the --mount flag was used with Docker Swarms. However, beginning with Docker 17.06, you can use --mount in all cases.
+
+### Docker Commands in specfific Cases:
+
+✔ Case1: Attach the volume to the container while creation. 
+
+```Dockerfile
+docker run — name=myJenkins1 -v myVol1:/var/jenkins_home -p 8181:8080 -p 50001:50000 jenkins
+
+Explanation of the commands
+
+— name=myJenkins1
+Giving name to the container
+
+-v myVol1:/var/jenkins_home
+myVol1 — volume of my base machine that is attaching to the /var/jenkins_home (Volume of container)
+
+-p 8181:8080
+8181 is the port of docker host VM for port mapping
+
+-p 50001:50000
+This port used for API configuration
+```
+
+✔ Case2: Attach the same volume to the container no. 2
+
+```Dockerfile
+docker run — name=myJenkins2 -v myVol1:/var/jenkins_home -p 8282:8080 -p 50002:50000 jenkins
+```
+
+✔ Case3: Attach any specific folder to the container no. 3
+
+```Dockerfile
+docker run — name=myJenkins3 -v /usr/local/:/var/jenkins_home -p 8383:8080 -p 50003:50000 jenkins
+```
+
+✔ Case4: To give another container access to a container's volumes
+
+```Dockerfile
+docker run -it -h NEWCONTAINER --volumes-from vol-test debian /bin/bash
+```
+✔ Case5: Permissions and Ownership:
+
+👉 *anything after the VOLUME instruction in a Dockerfile will not be able to make changes to that volume e.g:*
+
+```Dockerfile
+
+FROM debian:wheezy
+RUN useradd foo
+VOLUME /data
+RUN touch /data/x
+RUN chown -R foo:foo /data
+```
+Will not work as expected. 
+
+```Dockerfile
+
+FROM debian:wheezy
+RUN useradd foo
+RUN mkdir /data && touch /data/x
+RUN chown -R foo:foo /data
+VOLUME /data
+```
+Docker is clever enough to copy any files that exist in the image under the volume mount into the volume and set the ownership correctly. 
+
+✔ Case6: Deleting Volumes
+
+👉 *volume will only be deleted if no other container links to it. Volumes linked to user specified host directories are never deleted by docker.*
+
+To delete all volumes not in use, try:
+```Dockerfile  
+docker volume rm $(docker volume ls -q)
+```
+
+
+
+
+
+
+
