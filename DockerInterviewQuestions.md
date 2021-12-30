@@ -323,6 +323,9 @@ docker container logs tail -10 mynode
 docker container logs --tail 10--follow mynode
 ```
 
-
-
+#### Which command should you use to define volumes in the Dockerfile?
+   
+```Dockerfile   
+VOLUME /dockerexample
+```
   
