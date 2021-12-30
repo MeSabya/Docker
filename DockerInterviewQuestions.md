@@ -380,7 +380,12 @@ You see, by default, Docker containers emit logs to the stdout and stderr output
    1. - env_file : This can be used to supply a .env file containing all variables.
    
    2. - environment: This option is used to write down variables directly in docker-compose file.
-#### 
 
+#### Once you’ve worked with an image, how do you push it to the docker hub?
+
+After you are done working with an image, you need to use this following command to push it to the docker hub.
+```   
+docker push <username/image name> 
+```
 
   
