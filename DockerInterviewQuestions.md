@@ -311,4 +311,18 @@ tags are mutable so we should use these tags properly. Use digest since it is im
 Always build the image only with the necessary tools. Always reduce the usage of tools, it will have less surface for attacks.
 whenever we are sharing data between containers with volumes, make sure only one container is writing into the volume to avoid concurrency.  
 ```
+#### How do you see the logs of running containers?
+   
+```Dockerfile
+We can access logs of the running container with the following command
+// container logs
+docker container logs mynode
+// last 10 lines
+docker container logs tail -10 mynode
+// follow the logs
+docker container logs --tail 10--follow mynode
+```
+
+
+
   
