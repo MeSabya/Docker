@@ -1,6 +1,16 @@
 # Docker Interview Questions 
 
 #### Containers Vs Virtual Machines — Horizontal Comparison?
+![image](https://user-images.githubusercontent.com/33947539/147723164-e1cd2013-ed74-403d-9b91-6f23053df3d9.png)   ![image](https://user-images.githubusercontent.com/33947539/147723176-b5656380-9b53-482e-b8c2-7bad1fa265e5.png)
+
+**Hence a Virtual Machine will have:**
+
+1: Higher utilization of resources as it runs multiple operating systems. Where as Docker actually utilizes the underlying kernel and not the operating system.
+   So even if the machine on which docker installed is of ubuntu, docker can still install containers based on fedora, etc as the underlying kernel is same ie -linux.
+   
+2: Higher disk space, in GBs as compared to MBs for docker
+
+3: Boot up slower, in minutes as compared to seconds for docker
 
 
 #### Which instruction sets the base image for the subsequent builds in the Dokcerfile?
