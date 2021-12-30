@@ -375,7 +375,12 @@ You see, by default, Docker containers emit logs to the stdout and stderr output
 
 ![image](https://user-images.githubusercontent.com/33947539/147730223-479a5c82-a41f-4fe2-8683-2fe99ef45eb4.png)
 
-
+#### which all can be used to provide environment variables to a container in docker-compose.yml file?
+   
+   1. - env_file : This can be used to supply a .env file containing all variables.
+   
+   2. - environment: This option is used to write down variables directly in docker-compose file.
+#### 
 
 
   
