@@ -100,5 +100,16 @@ docker run -d --name=webApp2 --mount source=new_vol,destination=/usr/share/nginx
 we can load the page again localhost:80 and still see the html file that we edited in the volume.
 So, with the help of volumes, we can easily access the data even we stop the container and it’s very easy to access data and import the data to anywhere.
 
+### Explaining --mount option from above
 
+--mount — options are key-value pairs. Each pair is formatted like this: key=value, with a comma between one pair and the next. Common options:
 
+•	type — mount type. Options are bind, volume, or tmpfs. We’re all about the volume.
+
+•	source — source of the mount. For named volumes, this is the name of the volume. For unnamed volumes, this option is omitted. The key can be shortened to src.
+
+•	destination — the path where the file or directory is mounted in the container. The key can be shortened to dst or target.
+
+•	readonly —mounts the volume as read-only. Optional. Takes no value.
+
+>In the old days (i.e. pre-2017) 😏the --volume flag was popular. Originally, the -v or --volume flag was used for standalone containers and the --mount flag was used with Docker Swarms. However, beginning with Docker 17.06, you can use --mount in all cases.
