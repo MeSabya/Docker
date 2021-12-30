@@ -165,4 +165,5 @@ Here "." specifies the current directory where Dockerfile is present.
       dockerfile: Dockerfile-db
  ```
   
+:point_right: *depends_on: This is used to inform docker-compose about all the dependencies of a service. Docker-compose will then start dependencies first and the main service after*
 
