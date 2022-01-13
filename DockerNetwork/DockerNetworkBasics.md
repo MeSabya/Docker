@@ -41,6 +41,10 @@ You can have a similar setup in your Linux server via VETH (Virtual Ethernet Dev
   a port on the host system like  8000  needs to be mapped to port  80 on the container for outside traffic to reach the web service.
   
   ![image](https://user-images.githubusercontent.com/33947539/144073898-166d3703-a627-4f4e-b622-614ed0b74cf9.png)
+  
+  More simplied diagram of the above is :
+  ![image](https://user-images.githubusercontent.com/33947539/149351777-7bb98d95-2d1d-4c2c-9221-5dac055b9534.png)
+
 
 #### what's the docker0? is it an interface or bridge? if is an interface, does it have an IP address?
 > The docker0 bridge is virtual interface created by docker, it randomly chooses an address and subnet from the private range defined by RFC 1918 that are not in use on the host machine, and assigns it to docker0.
