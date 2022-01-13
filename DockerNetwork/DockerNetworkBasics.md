@@ -43,6 +43,7 @@ You can have a similar setup in your Linux server via VETH (Virtual Ethernet Dev
   ![image](https://user-images.githubusercontent.com/33947539/144073898-166d3703-a627-4f4e-b622-614ed0b74cf9.png)
   
   More simplied diagram of the above is :
+  
   ![image](https://user-images.githubusercontent.com/33947539/149351777-7bb98d95-2d1d-4c2c-9221-5dac055b9534.png)
 
 
