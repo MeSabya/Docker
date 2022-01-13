@@ -172,9 +172,20 @@ PING 172.22.0.2 (172.22.0.2) 56(84) bytes of data.
 👉 **Most Importantly**: Thus we can ensure containers from different apps can’t talk to each other.
 >Bonus info : Containers in different networks can’t talk to each other as they lie in different subnet.
 
+### How do containers talk to the internet?
+
+![image](https://user-images.githubusercontent.com/33947539/149342597-05c9e8ea-24f1-43b7-8595-59727379d346.png)
 
 
+Containers talk to docker0/user-defined networks using the ip assigned to it by this network.
+docker0/bridge network uses host’s ip on it’s default interface to talk to the the internet.
+Network keeps the containers completely isolated from anything that is not on the same network.
 
+
+### How does the outside world interact with the container then?
+This can be achieved by opening ports of the container and map them to the host’s port.
+
+![image](https://user-images.githubusercontent.com/33947539/149342741-bc2717dc-7651-4c94-9d16-4a6aaa6b604a.png)
 
 
 
