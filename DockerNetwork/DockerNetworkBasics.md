@@ -19,6 +19,11 @@
 
 - **Veth**: Virtual Ethernet device is a virtual device that acts as a tunnel between network namespaces. These devices create interconnected peering between the two connected 
   links and pass direct traffic between them. This concept mainly belongs to UNIX OS. On Windows OS it works differently.
+  
+  >Let’s assume that you have two computers. You probably know you can create a network link between those two computers via an ethernet cable, and you don’t need a network switch for that.
+You can have a similar setup in your Linux server via VETH (Virtual Ethernet Devices) interfaces. You can create a virtual ethernet device that works like an actual ethernet network adapter. The virtual ethernet device will act as a tunnel between the network namespaces that we will create.
+
+##### Reference : https://adil.medium.com/container-networking-under-the-hood-network-namespaces-6b2b8fe8dc2a 
 
 ## Docker Network Basics
 
