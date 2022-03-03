@@ -86,6 +86,57 @@ bd4fb9779be4c7a4306312a24ad9b3ff0e8eaf6bb3adccfc6611c9d4a44c716b
 You can get all configurations of a container, an image or a network. 
 >docker inspect <Container/Image/Network ID>
   
+### How can I debug "ImagePullBackOff"?
+For OpenShift use:
+
+```bash  
+oc describe pod <pod-id>  
+  
+For vanilla Kubernetes:
+
+kubectl describe pod <pod-id>  
+```
+Examine the events of the output. In my case it shows Back-off pulling image unreachableserver/nginx:1.14.22222
+
+In this case the image unreachableserver/nginx:1.14.22222 can not be pulled from the Internet because there is no Docker registry unreachableserver and the image nginx:1.14.22222 does not exist.
+
+NB: If you do not see any events of interest and the pod has been in the 'ImagePullBackOff' status for a while (seems like more than 60 minutes), you need to delete the pod and look at the events from the new pod.
+
+For OpenShift use:
+
+```bash
+oc delete pod <pod-id>
+oc get pods
+oc get pod <new-pod-id>
+For vanilla Kubernetes:
+
+kubectl delete pod <pod-id>  
+kubectl get pods
+kubectl get pod <new-pod-id>
+```
+  
+Sample output:
+
+  Type     Reason     Age                From               Message
+  ----     ------     ----               ----               -------
+  Normal   Scheduled  32s                default-scheduler  Successfully assigned rk/nginx-deployment-6c879b5f64-2xrmt to aks-agentpool-x
+  Normal   Pulling    17s (x2 over 30s)  kubelet            Pulling image "unreachableserver/nginx:1.14.22222"
+  Warning  Failed     16s (x2 over 29s)  kubelet            Failed to pull image "unreachableserver/nginx:1.14.22222": rpc error: code = Unknown desc = Error response from daemon: pull access denied for unreachableserver/nginx, repository does not exist or may require 'docker login': denied: requested access to the resource is denied
+  Warning  Failed     16s (x2 over 29s)  kubelet            Error: ErrImagePull
+  Normal   BackOff    5s (x2 over 28s)   kubelet            Back-off pulling image "unreachableserver/nginx:1.14.22222"
+  Warning  Failed     5s (x2 over 28s)   kubelet            Error: ImagePullBackOff
+
+
+**Additional debugging steps**:
+
+- try to pull the docker image and tag manually on your computer
+- Identify the node by doing a 'kubectl/oc get pods -o wide'
+- ssh into the node (if you can) that can not pull the docker image
+- check that the node can resolve the DNS of the docker registry by performing a ping.
+- try to pull the docker image manually on the node
+- If you are using a private registry, check that your secret exists and the secret is correct. Your secret should also be in the same namespace. Thanks swenzel
+- Some registries have firewalls that limit ip address access. The firewall may block the pull
+- Some CIs create deployments with temporary docker secrets. So the secret expires after a few days (You are asking for production failures...)
 
   
   
