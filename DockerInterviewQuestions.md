@@ -241,13 +241,18 @@ We can start the container in a detached mode as well with -d flag. When we star
 
 ![image](https://user-images.githubusercontent.com/33947539/147628578-de948b1b-b640-4470-b485-a333df97c9b3.png)
   
-#### Explain the Docker run command?
+## Explain the Docker run command?
 
 ![image](https://user-images.githubusercontent.com/33947539/147628712-cb3a1e92-b165-4a67-a6cf-82ada7dced80.png)
 
 ![image](https://user-images.githubusercontent.com/33947539/147629133-4ba10ebd-8225-454d-b9fc-681f97c1fd84.png)
 
-#### How do you interact with the running containers?
+## why do we base the container on an OS image? does docker always need an operating system as base image?
+   
+https://stackoverflow.com/a/59539524/17238613
+https://stackoverflow.com/questions/59539481/does-docker-always-need-an-operating-system-as-base-image
+
+## How do you interact with the running containers?
 
 👉 We can interact with the running containers in two ways **exec and attach**
   
@@ -255,7 +260,7 @@ we can directly interact with the container when we start a container by providi
 for instance, if we are running node, we can provide bash at the end to interact with it
 >docker container run -it --name my-node node:latest /bin/bash
 
-#### Explain the difference between attach and exec commands?
+## Explain the difference between attach and exec commands?
 **attach**: 
 This is used to interact with the container with the same process that container is running. Let’s run the following commands.
 
@@ -293,11 +298,11 @@ docker ps
 ```
 ![image](https://user-images.githubusercontent.com/33947539/147629576-3535b70c-ddf0-4527-aa58-d7079aa54409.png)
 
-#### What is the difference between the commands container stop and container rm?
+## What is the difference between the commands container stop and container rm?
 
 The difference is that docker container stop sends SIGTERM to container process and docker container rm sends SIGKILL to container process. SIGKILL wait for 10 sec before it ends container’s life.  
 
-#### What are some of the best practices using Docker containers?
+## What are some of the best practices using Docker containers?
 
 ```yaml  
 Always stop containers before removing. Graceful shutdown is always the best practice
@@ -311,7 +316,7 @@ tags are mutable so we should use these tags properly. Use digest since it is im
 Always build the image only with the necessary tools. Always reduce the usage of tools, it will have less surface for attacks.
 whenever we are sharing data between containers with volumes, make sure only one container is writing into the volume to avoid concurrency.  
 ```
-#### How do you see the logs of running containers?
+## How do you see the logs of running containers?
    
 ```Dockerfile
 We can access logs of the running container with the following command
@@ -323,13 +328,13 @@ docker container logs tail -10 mynode
 docker container logs --tail 10--follow mynode
 ```
 
-#### Which command should you use to define volumes in the Dockerfile?
+## Which command should you use to define volumes in the Dockerfile?
    
 ```Dockerfile   
 VOLUME /dockerexample
 ```
 
-#### What is the difference between CMD and ENTRYPOINT in a Dockerfile?
+## What is the difference between CMD and ENTRYPOINT in a Dockerfile?
 
 👉 *The ENTRYPOINT specifies a command that will always be executed when the container starts. The CMD specifies arguments that will be fed to the ENTRYPOINT.*
    
@@ -366,7 +371,7 @@ round-trip min/avg/max/stddev = 30.327/36.430/46.379/7.095 ms
    
 Anything that appears after the image name in the docker run command is passed to the container and treated as CMD arguments.
 
-#### Docker Logging: Where Are Container Logs Stored
+## Docker Logging: Where Are Container Logs Stored
 
 You see, by default, Docker containers emit logs to the stdout and stderr output streams. Containers are stateless, and the logs are stored on the Docker host in JSON files by default.
 
@@ -375,13 +380,13 @@ You see, by default, Docker containers emit logs to the stdout and stderr output
 
 ![image](https://user-images.githubusercontent.com/33947539/147730223-479a5c82-a41f-4fe2-8683-2fe99ef45eb4.png)
 
-#### which all can be used to provide environment variables to a container in docker-compose.yml file?
+## which all can be used to provide environment variables to a container in docker-compose.yml file?
    
    1. - env_file : This can be used to supply a .env file containing all variables.
    
    2. - environment: This option is used to write down variables directly in docker-compose file.
 
-#### Once you’ve worked with an image, how do you push it to the docker hub?
+## Once you’ve worked with an image, how do you push it to the docker hub?
 
 After you are done working with an image, you need to use this following command to push it to the docker hub.
 ```   
